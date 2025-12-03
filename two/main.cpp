@@ -49,6 +49,12 @@ int main ()
 }
 */
 
+bool is_invalid (string &id_string) {
+  string t = id_string + id_string;
+  size_t pos = t.find(id_string, 1);
+  return (pos != string::npos) && (pos < id_string.size());
+}
+
 int main ()
 {
   long long invalid_ids = 0;
@@ -64,27 +70,11 @@ int main ()
     long long end_id = stol(range_ids.at(1));
     cout << endl << start_id << " " << end_id << endl;
     
-    for (long long i = start_id; i <= end_id; i++) {
-      string id_string = to_string(i);
-      long long id_string_len = id_string.length();
-      bool is_invalid = false;
-      
-      for (long long idx = 1; idx <= (id_string_len/2); idx++) {
-        if (id_string_len % idx != 0) {continue;}
-        string pattern = id_string.substr(0, idx);
-        string constructed= "";
-        int required_repeats = id_string_len/idx;
-
-        for (int k = 0; k < required_repeats; k++) {
-          constructed += pattern;
-        }
-
-        if (constructed == id_string) {
-          is_invalid = true;
-          break;
-        }
+    for (long long id = start_id; id <= end_id; id++) {
+      string id_string = to_string(id);
+      if (is_invalid(id_string)) {
+        invalid_ids += id;
       }
-      if (is_invalid) {invalid_ids += i;}
     }
   }
 
